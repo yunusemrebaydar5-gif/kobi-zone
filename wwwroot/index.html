@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kobi-Zone · İşletmeler arası kapasite pazarı</title>
+<style>
+:root{--bg:#fff;--sf:#18212a;--ink:#16202a;--mu:#5b6773;--ln:#d8dde3;--ac:#ff8a3d;--at:#ff8a3d;--ai:#1a0e05;--ok:#69db7c;--ch:#e8ebef;--in:#fff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-mode="night"]{--bg:#0f151b;--ink:#eef1f4;--mu:#9aa7b3;--ln:#2a3541;--ch:#212c37;--in:#0f151b;color-scheme:dark}
+header,.hero,.c{--ink:#eef1f4;--mu:#9aa7b3;--ln:#2a3541;--bg:#18212a;--ch:#212c37;--in:#0f151b;color:var(--ink)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,::before,::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--sf)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:21;background:var(--sf);border-bottom:1px solid var(--ln)}
+.bar,main,footer{max-width:1080px;margin:auto;padding-left:16px;padding-right:16px}
+.bar{padding-top:10px;padding-bottom:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:20px;letter-spacing:-.02em;display:flex;align-items:center;gap:8px;cursor:pointer}
+.logo img{width:40px;height:40px;border-radius:50%;display:block}
+nav{display:flex;gap:4px;overflow-x:auto;flex:1}
+nav a{padding:8px 12px;border-radius:99px;color:var(--mu);text-decoration:none;font-weight:600;font-size:14px;white-space:nowrap}
+nav a.on{background:var(--ink);color:var(--bg)}
+.badge{font-size:12px;font-weight:700;color:var(--ok);border:1px solid var(--ok);border-radius:99px;padding:3px 10px;white-space:nowrap}
+.ic{border:1px solid var(--ln);background:var(--ch);color:var(--ink);border-radius:99px;width:36px;height:36px;cursor:pointer;font-size:16px}
+main{padding-top:20px;padding-bottom:50px}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+h1{font-size:clamp(32px,6vw,56px);line-height:1.05;letter-spacing:-.03em;margin:.2em 0}
+h1 em{font-style:normal}
+h2{font-size:22px;margin:28px 0 12px}h3{font-size:17px;margin:.4em 0}
+.hero{background:var(--sf);border:1px solid var(--ln);border-radius:22px;padding:clamp(20px,5vw,48px)}
+.ey{color:var(--at);font-weight:700;font-size:13px;letter-spacing:.06em;margin:0}
+.lead{font-size:18px;color:var(--mu);max-width:56ch}
+.row2{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.stats{display:flex;gap:28px;flex-wrap:wrap;color:var(--mu);font-size:13px}.stats b{display:block;font-size:24px;color:var(--ink)}
+.g{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}.g1{display:grid;gap:14px}
+.c{background:var(--sf);border:1px solid var(--ln);border-radius:14px;padding:16px;position:relative}
+.fc{cursor:pointer;transition:transform .15s,border-color .15s}.fc:hover{transform:translateY(-3px);border-color:var(--ac)}
+.ico{font-size:28px}.ar{position:absolute;right:16px;top:14px;color:var(--at);font-weight:700}
+.mu{color:var(--mu);margin:.3em 0}.ok{color:var(--ok);font-weight:600;font-size:13px}
+.tag{font-size:12px;font-weight:700;color:var(--at)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+.btn{background:var(--ac);color:var(--ai);border:0;border-radius:99px;padding:10px 18px;font-weight:700;font-size:15px;font-family:inherit;cursor:pointer}
+.btn.sm{padding:8px 14px;font-size:14px}.ghost{background:none;color:var(--ink);border:1.5px solid var(--ln)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px}
+.chip{border:1px solid var(--ln);background:var(--ch);color:var(--ink);padding:6px 14px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--in);border:1px solid var(--ln);border-radius:10px;padding:10px 12px}
+label{display:block;font-size:13px;color:var(--mu);margin-top:10px}.row select{width:auto}
+.st{display:flex;gap:6px;margin:14px 0 6px}.st div{flex:1;font-size:11px;color:var(--mu);border-top:4px solid var(--ln);padding-top:4px}.st .d{border-color:var(--ac);color:var(--ink);font-weight:700}
+.fp{display:flex;gap:14px}
+.vt{border:1px solid var(--ln);background:var(--ch);color:var(--ink);border-radius:10px;width:48px;height:56px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:none;font-family:inherit}
+.vt.on{background:var(--ac);color:var(--ai);border-color:var(--ac)}
+.vs{padding-left:20px;color:var(--mu)}
+.md{position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;z-index:50;padding:16px}.md.on{display:flex}.md .c{width:min(440px,100%)}
+#to{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:.25s;z-index:60;font-size:14px;max-width:92vw}
+#to.on{opacity:1;transform:translate(-50%,0)}
+.view{display:none}.view.on{display:block}
+footer{color:var(--mu);font-size:13px;padding-bottom:30px;text-align:center}
+@media(max-width:640px){nav{order:3;flex-basis:100%}.badge{display:none}}
+[hidden]{display:none!important}
+.li{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.pr{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.fg{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.fg label{margin-top:0}
+.ab{display:flex;gap:24px;align-items:center;flex-wrap:wrap}.ab img{width:112px;height:112px;border-radius:50%}
+.ct{list-style:none;padding:0;margin:0;display:grid;gap:10px}.ct a{color:var(--ink)}
+.bd{overflow:hidden;padding:0}
+.bh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 16px 0}.bh h3{margin:0}
+.cb{display:flex;gap:8px;align-items:center}
+.vp{overflow:hidden}
+.tr{display:flex;transition:transform .6s cubic-bezier(.4,0,.2,1)}
+.sl{flex:0 0 100%;padding:18px 16px 8px;min-height:150px}.sl h3{font-size:clamp(18px,3vw,24px)}
+.dts{display:flex;gap:8px;justify-content:center;padding:6px 0 14px}
+.dt{width:9px;height:9px;border-radius:50%;border:0;background:var(--mu);opacity:.4;cursor:pointer;padding:0;transition:width .3s}.dt.on{width:24px;border-radius:5px;background:var(--ac);opacity:1}
+@media(prefers-reduced-motion:reduce){.tr,.dt{transition:none}}
+#lo{margin-left:auto;padding:6px 12px;font-size:13px}
+.lv{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto;overscroll-behavior:contain}
+.lc{width:min(400px,100%);text-align:center;padding:28px 24px}
+.lc>img{width:96px;height:96px;border-radius:50%;display:block;margin:0 auto 10px}
+.lc h1{font-size:30px;margin:0 0 14px}.lc label{text-align:left}
+.lr{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:14px 0 18px}
+.ck{display:flex;align-items:center;gap:8px;margin:0!important;cursor:pointer}.ck input{width:auto;accent-color:var(--ac)}
+.lk{background:none;border:0;color:var(--at);font:inherit;font-size:13px;cursor:pointer;padding:0;text-decoration:underline}
+.fq{padding:0}.fq summary{cursor:pointer;font-weight:700;padding:16px 44px 16px 16px;list-style:none;position:relative}
+.fq summary::-webkit-details-marker{display:none}
+.fq summary::after{content:"+";position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:22px;color:var(--at)}
+.fq[open] summary::after{content:"−"}
+.fq>:not(summary){margin:0 16px 16px}
+.lv{align-items:flex-start}.lc{margin:auto}.ob{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="lv" id="lv"><div class="c lc">
+<img id="lg" alt="Kobi-Zone logosu">
+<h1>Kobi-Zone</h1>
+<div id="lf">
+<label>E-posta<input id="lu" type="email" autocomplete="username" placeholder="ornek@firma.com" onkeydown="if(event.key==='Enter')$('#lp').focus()"></label>
+<label>Şifre<input id="lp" type="password" autocomplete="current-password" placeholder="Şifreniz" onkeydown="if(event.key==='Enter')lgn()"></label>
+<div class="lr"><label class="ck"><input type="checkbox" id="lr">Beni hatırla</label><button class="lk" type="button" onclick="toast('Şifre sıfırlama henüz hazır değil')">Şifremi unuttum</button></div>
+<button class="btn" style="width:100%" onclick="lgn()">Giriş yap</button>
+<p class="mu" style="margin-top:14px">Hesabın yok mu? <button class="lk" type="button" onclick="lsw(1)">Firmanı kaydet</button></p>
+</div>
+<div id="rf" hidden>
+<label>Firma unvanı<input id="r_c" maxlength="150" autocomplete="organization"></label>
+<label>Vergi numarası (10 hane)<input id="r_t" inputmode="numeric" maxlength="10"></label>
+<label>Vergi dairesi<input id="r_o" maxlength="100"></label>
+<label>Şehir<input id="r_y" maxlength="50"></label>
+<label>Yetkili ad soyad<input id="r_n" maxlength="100" autocomplete="name"></label>
+<label>E-posta<input id="r_e" type="email" maxlength="100" autocomplete="email"></label>
+<label>Telefon (11 hane)<input id="r_p" inputmode="numeric" maxlength="11" placeholder="05xxxxxxxxx"></label>
+<label>Şifre (en az 8 karakter)<input id="r_s" type="password" autocomplete="new-password"></label>
+<button class="btn" style="width:100%;margin-top:18px" onclick="reg()">Kayıt ol</button>
+<p class="mu" style="margin-top:14px">Zaten hesabın var mı? <button class="lk" type="button" onclick="lsw(0)">Giriş yap</button></p>
+</div>
+</div></div>
+<header><div class="bar">
+<div class="logo" onclick="go('anasayfa')"><img src="data:image/png;base64,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" alt="">Kobi-Zone</div>
+<nav><a href="#anasayfa" data-v="anasayfa">Anasayfa</a><a href="#pazar" data-v="pazar">Pazar</a><a href="#ilanlarim" data-v="ilanlarim">İlanlarım</a><a href="#teklifler" data-v="teklifler">Teklifler</a><a href="#forum" data-v="forum">Forum</a><a href="#hakkimizda" data-v="hakkimizda">Hakkımızda</a><a href="#destek" data-v="destek">Destek</a></nav>
+<span class="badge" id="bdg"></span><button class="btn ghost sm" id="lo" onclick="lout()">Çıkış</button><button class="ic" id="th" title="Gece / gündüz modu" aria-label="Gece / gündüz modu">◐</button>
+</div></header>
+<main>
+<section id="v-anasayfa" class="view">
+<div class="hero">
+<p class="ey">KOBİ’lere özel kapalı ağ</p>
+<h1>Atıl kapasiteni <em>değere</em> çevir.</h1>
+<p class="lead">Personel, ekipman ve hurda; yalnızca doğrulanmış firmalar arasında, teklif ve akıllı sözleşmeyle.</p>
+<div class="row2"><button class="btn" onclick="go('pazar')">Pazarı keşfet →</button><button class="btn ghost" onclick="dgs()">Firmanı doğrulat</button></div>
+<div class="stats"><div><b>1.248</b>doğrulanmış firma</div><div><b>64</b>ilden katılım</div><div><b>₺12,4 M</b>güvenceli işlem</div></div>
+</div>
+<h2>İlanlar</h2>
+<div class="c bd" onmouseenter="bh=1" onmouseleave="bh=0" onfocusin="bh=1" onfocusout="bh=0">
+<div class="bh"><h3>📌 Canlı ilan panosu</h3><div class="cb"><button class="btn ghost sm" onclick="go('pazar')">Tüm ilanlar →</button><button class="ic" aria-label="Önceki ilan" onclick="bgo(bi-1)">‹</button><button class="ic" aria-label="Sonraki ilan" onclick="bgo(bi+1)">›</button></div></div>
+<div class="vp"><div class="tr" id="bt"></div></div><div class="dts" id="bdt"></div></div>
+</section>
+
+<section id="v-pazar" class="view"><h2>Pazar</h2>
+<input id="q" placeholder="İlan veya firma ara…" oninput="q=this.value.toLocaleLowerCase('tr');mk()">
+<div class="c" id="fb" style="margin:12px 0 14px"><div class="fg">
+<label>Kategori<select id="fk" onchange="fkc()"><option value="all">Tümü</option><option value="is">İş gücü</option><option value="ekipman">Ekipman</option><option value="hurda">Donanım &amp; hurda</option></select></label>
+<label id="fjl" hidden><span id="fjt"></span><select id="fj" onchange="mk()"></select></label>
+<label>İşlem<select id="fm" onchange="mk()"><option value="">Hepsi</option><option>Kiralık</option><option>Takas</option><option>Satılık</option></select></label>
+<label>En az ücret (₺)<input id="f1" type="number" min="0" placeholder="0" oninput="mk()"></label>
+<label>En çok ücret (₺)<input id="f2" type="number" min="0" placeholder="Sınırsız" oninput="mk()"></label>
+</div><div class="row"><span class="mu" id="cn"></span><button class="btn ghost sm" onclick="fr()">Filtreleri temizle</button></div></div>
+<div class="g1" id="ml"></div></section>
+
+<section id="v-ilanlarim" class="view"><h2>İlanlarım</h2>
+<p class="mu">Rezervindeki boş kapasiteyi kiralık, satılık veya takaslık ilana dönüştür; ilanın Pazar sayfasında ve anasayfa panosunda yayınlanır.</p>
+<div class="c" style="margin:12px 0 24px"><h3>➕ Yeni ilan oluştur</h3><div class="fg" style="margin-top:8px">
+<label>İlan türü<select id="i_m" onchange="ipc()"><option>Kiralık</option><option>Satılık</option><option>Takas</option></select></label>
+<label>Kategori<select id="i_k" onchange="ikc()"><option value="is">İş gücü</option><option value="ekipman">Ekipman</option><option value="hurda">Donanım &amp; hurda</option></select></label>
+<label>Alt tür<select id="i_j"></select></label>
+<label>Konum<input id="i_l" placeholder="Örn. Kayseri"></label>
+<label>Fiyat (₺)<input id="i_p" type="number" min="0" placeholder="0"></label>
+<label>Birim<select id="i_u"><option value="">Toplam</option><option value="hour">saat</option><option value="day">gün</option><option value="month">ay</option><option value="kg">kg</option><option value="ton">ton</option><option value="piece">adet</option></select></label>
+</div>
+<label>İlan başlığı<input id="i_t" placeholder="Örn. 3 tonluk transpalet, aylık kiralama"></label>
+<label>Açıklama (isteğe bağlı)<textarea id="i_d" rows="2" placeholder="Durum, müsait tarihler, takasta aradığınız karşılık…"></textarea></label>
+<div class="row"><span class="mu">Takas ilanlarında fiyat gerekmez.</span><button class="btn" onclick="iyay()">İlanı yayınla</button></div></div>
+<h2>Yayındaki ilanlarım</h2><div class="g1" id="my"></div></section>
+
+<section id="v-teklifler" class="view"><h2>Tekliflerim ve sözleşmeler</h2>
+<p class="mu">Sepet yok: her işlem teklifle başlar, akıllı sözleşmeyle güvence altına alınır.</p>
+<div class="g1" id="ol"></div></section>
+
+<section id="v-forum" class="view"><h2>Sektörel forum</h2>
+<div class="chips" id="fsc"></div>
+<div class="c"><input id="ft" placeholder="Sektörünüze bir soru sorun veya fikir paylaşın…"><textarea id="fd" rows="2" maxlength="4000" placeholder="Detay (isteğe bağlı)" style="margin-top:10px"></textarea>
+<div class="row"><select id="fs" aria-label="Forum kategorisi"></select><button class="btn" onclick="fp()">Paylaş</button></div></div>
+<div class="g1" id="fl" style="margin-top:14px"></div></section>
+<section id="v-hakkimizda" class="view">
+<div class="hero ab"><img id="ab" alt="Kobi-Zone logosu"><div><p class="ey">Hakkımızda</p><h1>İşletmeleri <em>ortak güçte</em> buluşturuyoruz.</h1><p class="lead">Kobi-Zone; KOBİ’lerin atıl kapasitesini birbirine bağlayan, doğrulanmış ve kapalı bir iş ağıdır.</p></div></div>
+<h2>Platform neler sunuyor?</h2><div class="g" id="fx"></div>
+<div class="g" style="margin-top:28px">
+<div class="c"><h3>🎯 Misyonumuz</h3><p class="mu">KOBİ’lerin boşta kalan iş gücünü, ekipmanını ve ihtiyaç fazlası malzemesini ihtiyacı olan işletmelerle buluşturmak; doğrulanmış firmalar arasında teklif ve akıllı sözleşmeye dayanan güvenli, şeffaf ve hızlı bir ticaret ortamı sunmak.</p></div>
+<div class="c"><h3>🔭 Vizyonumuz</h3><p class="mu">İşletmeler arası kapasite paylaşımının sanayide yeni standart olduğu; hiçbir makinenin, ustanın ya da malzemenin boşta beklemediği, üretimin iş birliğiyle güçlendiği sürdürülebilir bir sanayi ekosistemi oluşturmak.</p></div></div>
+<h2>İletişim</h2>
+<div class="g"><div class="c"><h3>Bize ulaşın</h3><ul class="ct"><li>✉️ <a href="mailto:kobi.zone@gmail.com">kobi.zone@gmail.com</a></li><li>📸 Instagram · @kobi.zone</li><li>🐦 X (Twitter) · @kobi_zone</li><li>💼 LinkedIn · Kobi-Zone</li><li>📞 +90 (850) 000 00 00 (örnek)</li></ul></div>
+<div class="c"><h3>Mesaj bırakın</h3><textarea id="cm" rows="4" placeholder="Sorunuzu veya iş birliği önerinizi yazın…"></textarea><div class="row"><span></span><button class="btn" onclick="cs()">Gönder</button></div></div></div>
+</section>
+<section id="v-destek" class="view">
+<h2>Sıkça sorulan sorular</h2>
+<div class="g1">
+<details class="c fq" open><summary>Verilerimiz nasıl korunuyor?</summary><p class="mu">Veriler şifreli bağlantıyla iletilir ve yalnızca yetkili kişilerin erişimine açıktır. İlanlar yalnızca doğrulanmış firmalara görünür. Yasal saklama süresi sonunda veriler silinir veya anonim hale getirilir.</p></details>
+<details class="c fq"><summary>Hangi verilerimiz kullanılacak?</summary><ul class="vs"><li>Firma unvanı, vergi numarası ve sicil bilgileri</li><li>Yetkili kişinin ad, soyad ve iletişim bilgileri</li><li>İlan, teklif ve sözleşme kayıtları</li><li>Cihaz ve oturum (log) kayıtları</li></ul></details>
+<details class="c fq"><summary>Haklarımız neler?</summary><ul class="vs"><li>Verilerinizin işlenip işlenmediğini öğrenme</li><li>İşlenmişse bilgi talep etme ve amacını öğrenme</li><li>Aktarıldığı kişileri bilme</li><li>Düzeltme, silme veya yok edilmesini isteme</li><li>İşlemeye itiraz etme, zararın giderilmesini talep etme</li></ul></details>
+</div>
+<h2>Güven altyapısı</h2>
+<div class="c" id="dg"><h3>🛡️ Doğrulama nasıl işler?</h3>
+<ol class="vs"><li>Vergi levhası ve ticaret veya esnaf sicil kaydı</li><li>İmza sirküleri ve yetkili kontrolü</li><li>Faaliyet belgesi veya oda kaydı teyidi</li><li>Profilde “Doğrulanmış firma” rozeti</li></ol>
+<p class="mu" id="dst"></p>
+<div class="fg"><label>Belge türü<select id="d_t"><option value="tax_plate">Vergi levhası</option><option value="signature_circular">İmza sirküleri</option><option value="trade_registry">Ticaret sicil kaydı</option><option value="other">Diğer</option></select></label><label>Dosya (PDF, JPG, PNG)<input id="d_f" type="file" accept=".pdf,.jpg,.jpeg,.png"></label></div>
+<div class="row"><span></span><button class="btn" onclick="dup()">Belgeyi yükle</button></div></div>
+<h2>Gizlilik ve KVKK</h2>
+<p class="mu">Kobi-Zone, kişisel verileri 6698 sayılı KVKK ve ilgili mevzuata uygun şekilde işler. Bu metin örnek taslaktır; yayına alınmadan önce hukuki incelemeden geçirilmelidir.</p>
+<div class="g">
+<div class="c"><h3>📋 Veri sorumlusu</h3><p class="mu">Kobi-Zone (örnek veri sorumlusu). Talepleriniz için: kobi.zone@gmail.com</p><button class="btn sm" onclick="toast('Demo: KVKK başvuru formu burada açılacak')">KVKK başvurusu yap</button></div>
+<div class="c"><h3>🎯 İşleme amaçları</h3><ul class="vs"><li>Firma doğrulama ve üyelik işlemleri</li><li>İlan, teklif ve akıllı sözleşme süreçleri</li><li>Güvenlik ve dolandırıcılığın önlenmesi</li><li>Yasal yükümlülüklerin yerine getirilmesi</li></ul></div>
+<div class="c"><h3>🍪 Çerezler</h3><p class="mu">Yalnızca oturum ve güvenlik için zorunlu çerezler kullanılır; reklam amaçlı takip yapılmaz.</p></div>
+</div>
+<h2>İletişim</h2>
+<div class="g"><div class="c"><h3>Bize ulaşın</h3><ul class="ct"><li>✉️ <a href="mailto:kobi.zone@gmail.com">kobi.zone@gmail.com</a></li><li>📸 Instagram · @kobi.zone</li><li>🐦 X (Twitter) · @kobi_zone</li><li>💼 LinkedIn · Kobi-Zone</li><li>📞 +90 (850) 000 00 00 (örnek)</li></ul></div>
+<div class="c"><h3>Mesaj bırakın</h3><textarea id="dm" rows="4" placeholder="Sorunuzu veya iş birliği önerinizi yazın…"></textarea><div class="row"><span></span><button class="btn" onclick="cs('dm')">Gönder</button></div></div></div>
+</section>
+</main>
+<footer>Kobi-Zone v0.3</footer>
+
+<div class="md" id="md"><div class="c"><h3 id="mt"></h3>
+<label>Teklif bedeli (₺)<input id="mp" type="number" min="0" placeholder="Takasta boş bırakılabilir"></label>
+<label>Not ve şartlar<textarea id="mn" rows="3" placeholder="Süre, teslim şekli, ödeme planı…"></textarea></label>
+<div class="row"><button class="btn ghost" onclick="cl()">Vazgeç</button><button class="btn" onclick="snd()">Teklifi gönder</button></div></div></div>
+<div id="to"></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* Sayfa backend'in içinden (wwwroot) açılırsa aynı adres kullanılır;
+   dosya olarak çift tıklayıp açılırsa localhost:5016'ya bağlanır. */
+const API=location.protocol==="file:"?"http://localhost:5016":"";
+
+const K={is:"İş gücü",ekipman:"Ekipman",hurda:"Donanım & hurda"};
+/* Veritabanındaki ana kategori adı -> sayfadaki kategori */
+const ROOTK={"Personel":"is","İş Makineleri":"ekipman","Teknik Donanım":"hurda","Hurda ve Geri Dönüşüm":"hurda"};
+const ROOTN={is:"Personel",ekipman:"İş Makineleri",hurda:"Hurda ve Geri Dönüşüm"};
+const TL={is:"İş türü",ekipman:"Ekipman türü",hurda:"Malzeme türü"};
+const UL={hour:"saat",day:"gün",month:"ay",kg:"kg",ton:"ton",piece:"adet",person_day:"kişi/gün"};
+/* Kategori + işlem -> veritabanındaki ListingType */
+const LT={is:{"Kiralık":"labor_rent","Takas":"labor_swap"},
+ ekipman:{"Kiralık":"equipment_rent","Takas":"equipment_swap","Satılık":"goods_sale"},
+ hurda:{"Satılık":"scrap_sale","Takas":"equipment_swap"}};
+const S=["Teklif","Pazarlık","Akıllı sözleşme","Tamamlandı"];
+const F=[
+["👷","İş gücü paylaşımı","Dönemsel personel kiralama, geçici görevlendirme ve takas.","pazar","is"],
+["🚜","Ekipman kiralama ve takas","Boşta bekleyen makine ve donanım, ihtiyacı olan firmaya.","pazar","ekipman"],
+["♻️","Donanım ve hurda ticareti","İhtiyaç fazlası malzeme ve geri dönüşüm hurdası.","pazar","hurda"],
+["📄","Teklif ve akıllı sözleşme","Teklif al-ver, iki tarafın imzaladığı sözleşmeyle kayıt altına al.","teklifler"],
+["🛡️","Doğrulanmış kapalı ağ","Her firma resmi evrakla doğrulanır, ağ yalnızca işletmelere açıktır.","dg"],
+["💬","Sektörel forum","Bilgi paylaş, ortak çözüm ve organik iş birliği bul.","forum"]];
+const V=["anasayfa","pazar","ilanlarim","teklifler","forum","hakkimizda","destek"];
+
+let L=[],MY=[],O=[],P=[],CATS=[],FC=[],me=null,tok=null,fo={};
+let q="",cur=null,cq=null,want=null,bi=0,bh=0,bx,gn=false,fsec=0;
+try{gn=localStorage.getItem("kzm")==="n"}catch(e){}
+
+/* ---------- Genel yardımcılar ---------- */
+function toast(m){const t=$("#to");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),3200)}
+let cv="";function go(v){cv=v;try{history.pushState(null,"","#"+v)}catch(e){}route()}
+function route(){let h=cv||location.hash.slice(1);if(!V.includes(h))h="anasayfa";
+ $$(".view").forEach(e=>e.classList.toggle("on",e.id==="v-"+h));
+ $$("nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===h));if(want){$("#"+want).scrollIntoView();want=null}else scrollTo(0,0)}
+function dgs(){want="dg";go("destek")}
+function fc(i){const f=F[i];if(f[3]==="dg")return dgs();if(f[4]){fr();$("#fk").value=f[4];fkc()}go(f[3])}
+function smode(){document.documentElement.dataset.mode=gn?"night":"day";try{localStorage.setItem("kzm",gn?"n":"d")}catch(e){}}
+function cs(i){const t=$("#"+(i||"cm"));if(!t.value.trim())return toast("Önce mesajını yaz");t.value="";toast("Mesajın iletildi (demo)")}
+const val=id=>$("#"+id).value.trim();
+
+/* ---------- Backend ile konuşma ---------- */
+function tget(){try{return localStorage.getItem("kzt")||sessionStorage.getItem("kzt")}catch(e){return null}}
+function tset(t,keep){tok=t;try{localStorage.removeItem("kzt");sessionStorage.removeItem("kzt");if(t)(keep?localStorage:sessionStorage).setItem("kzt",t)}catch(e){}}
+
+async function api(path,opt={}){
+ const h={};if(tok)h.Authorization="Bearer "+tok;
+ let body=opt.body;
+ if(body&&!(body instanceof FormData)){h["Content-Type"]="application/json";body=JSON.stringify(body)}
+ let r;
+ try{r=await fetch(API+path,{method:opt.method||"GET",headers:h,body})}
+ catch(e){throw new Error("Sunucuya ulaşılamadı. Backend çalışıyor mu?")}
+ const tx=await r.text();let d=null;
+ if(tx){try{d=JSON.parse(tx)}catch(e){d=tx}}
+ if(r.status===401&&tok){lout(true);throw new Error("Oturumun sona erdi, tekrar giriş yap")}
+ if(!r.ok){
+  let m;
+  if(typeof d==="string"&&d)m=d;
+  else if(d&&d.errors)m=Object.values(d.errors).flat().join(" ");
+  else if(d&&d.title)m=d.title;
+  else m=r.status===403?"Bu işlem için yetkin yok":"Hata "+r.status;
+  throw new Error(m)}
+ return d}
+
+/* ---------- Giriş / kayıt ---------- */
+function lsw(r){$("#lf").hidden=!!r;$("#rf").hidden=!r}
+async function lgn(){const u=val("lu"),p=$("#lp").value;if(!u||!p)return toast("E-posta ve şifre gerekli");
+ try{const d=await api("/api/auth/login",{method:"POST",body:{email:u,password:p}});
+  tset(d.token,$("#lr").checked);
+  try{if($("#lr").checked)localStorage.setItem("kzu",u);else localStorage.removeItem("kzu")}catch(e){}
+  $("#lp").value="";await start()}catch(e){toast(e.message)}}
+async function reg(){
+ const b={companyName:val("r_c"),taxNumber:val("r_t"),taxOffice:val("r_o"),city:val("r_y"),fullName:val("r_n"),email:val("r_e"),password:$("#r_s").value,phone:val("r_p")};
+ if(Object.values(b).some(x=>!x))return toast("Tüm alanları doldur");
+ if(!/^\d{10}$/.test(b.taxNumber))return toast("Vergi numarası 10 haneli olmalı");
+ if(!/^\d{11}$/.test(b.phone))return toast("Telefon 11 haneli olmalı (05xxxxxxxxx)");
+ if(b.password.length<8)return toast("Şifre en az 8 karakter olmalı");
+ try{const d=await api("/api/auth/register",{method:"POST",body:b});
+  tset(d.token,false);$("#r_s").value="";lsw(0);await start();
+  toast("Kaydın alındı. Firman onaylanınca ilan ve teklif verebilirsin.")}catch(e){toast(e.message)}}
+function lout(silent){tset(null);me=null;if(!silent){try{localStorage.removeItem("kzu")}catch(e){}$("#lr").checked=false}
+ $("#lv").hidden=false;go("anasayfa")}
+
+async function start(){
+ try{me=await api("/api/companies/me")}catch(e){$("#lv").hidden=false;return toast(e.message)}
+ $("#lv").hidden=true;scrollTo(0,0);bdgr();
+ try{CATS=await api("/api/categories")}catch(e){toast(e.message)}
+ fkc();ikc();ipc();
+ await Promise.all([loadL(),loadMy(),loadO(),loadF()].map(p=>p.catch(e=>toast(e.message))));
+ route()}
+
+function bdgr(){const s=me.verificationStatus,b=$("#bdg");
+ b.textContent=s==="approved"?"🛡️ Doğrulanmış":s==="rejected"?"⚠️ Doğrulama reddedildi":"⏳ Onay bekliyor";
+ b.style.color=b.style.borderColor=s==="approved"?"":"var(--at)";
+ $("#dst").textContent=s==="approved"?me.companyName+" doğrulandı ✓"
+  :s==="rejected"?"Başvurun reddedildi"+(me.rejectReason?": "+me.rejectReason:"")+". Belgelerini yeniden yükleyebilirsin."
+  :me.companyName+" onay bekliyor. Belgelerini yükle; inceleme sonrası rozetin açılır."}
+async function dup(){const f=$("#d_f").files[0];if(!f)return toast("Önce bir dosya seç");
+ const fd=new FormData();fd.append("docType",$("#d_t").value);fd.append("file",f);
+ try{await api("/api/companies/documents",{method:"POST",body:fd});$("#d_f").value="";toast("Belgen yüklendi, incelemeye alındı")}catch(e){toast(e.message)}}
+
+/* ---------- Kategoriler ---------- */
+function catOf(id){return CATS.find(c=>c.categoryId===id)}
+function rootOf(c){return c&&c.parentCategoryId?catOf(c.parentCategoryId):c}
+function subs(k){const r=CATS.filter(c=>!c.parentCategoryId&&ROOTK[c.categoryName]===k).map(c=>c.categoryId);
+ return CATS.filter(c=>r.includes(c.parentCategoryId))}
+function rootId(k){const c=CATS.find(c=>!c.parentCategoryId&&c.categoryName===ROOTN[k]);return c?c.categoryId:null}
+
+/* ---------- İlanlar ---------- */
+function fmtP(n,u,m){if(n==null)return m==="Takas"?"Takas":"Teklif usulü";
+ return Number(n).toLocaleString("tr-TR")+" ₺"+(u&&UL[u]?" / "+UL[u]:"")}
+/* Backend'den gelen ilanı sayfanın kullandığı biçime çevirir */
+function vm(x){const c=catOf(x.categoryId),r=rootOf(c),k=ROOTK[r?r.categoryName:""]||"ekipman";
+ const m=x.listingType.endsWith("_rent")?"Kiralık":x.listingType.endsWith("_swap")?"Takas":"Satılık";
+ return{id:x.listingId,k,j:c&&c.parentCategoryId?c.categoryName:"Diğer",t:x.title,f:x.companyName,y:x.city||"",
+  n:x.price,p:fmtP(x.price,x.priceUnit,m),m,own:!!me&&x.companyId===me.companyId,dsc:x.about||"",d:!x.isActive}}
+async function loadL(){const d=await api("/api/listings?pageSize=200");L=d.items.map(vm);mk();bdr()}
+async function loadMy(){MY=(await api("/api/listings/mine")).map(vm);myl()}
+
+function card(x,cls){return `<div class="${cls} li"><div><span class="tag">${K[x.k]} · ${esc(x.j)} · ${x.m}</span><h3>${esc(x.t)}</h3><p class="mu">${esc(x.f)} · ${esc(x.y)} <span class="ok">✓ Doğrulanmış</span></p>${x.dsc?`<p class="mu">${esc(x.dsc)}</p>`:""}</div><div class="pr"><b>${esc(x.p)}</b>${x.own?'<span class="tag">Sizin ilanınız</span>':`<button class="btn sm" onclick="ask(${x.id})">Teklif ver</button>`}</div></div>`}
+function mk(){
+ const k=$("#fk").value,j=$("#fj").value,m=$("#fm").value,a=$("#f1").value,b=$("#f2").value;
+ const r=L.filter(x=>(k==="all"||x.k===k)&&(!j||x.j===j)&&(!m||x.m===m)&&((a===""&&b==="")||(x.n!=null&&(a===""||x.n>=+a)&&(b===""||x.n<=+b)))&&(x.t+" "+x.f).toLocaleLowerCase("tr").includes(q));
+ $("#cn").textContent=r.length+" ilan listeleniyor";
+ $("#ml").innerHTML=r.map(x=>card(x,"c")).join("")||'<p class="mu">Bu filtrelere uyan ilan bulunamadı.</p>'}
+function fkc(){const k=$("#fk").value;$("#fjl").hidden=k==="all";$("#fjt").textContent=TL[k]||"";
+ $("#fj").innerHTML='<option value="">Hepsi</option>'+(k==="all"?[]:[...subs(k).map(c=>c.categoryName),"Diğer"]).map(j=>`<option>${esc(j)}</option>`).join("");mk()}
+function fr(){$("#fk").value="all";$("#fm").value="";$("#f1").value="";$("#f2").value="";$("#q").value="";q="";fkc()}
+function bdr(){const R=L.filter(x=>x.m!=="Satılık");
+ $("#bt").innerHTML=R.map(x=>card(x,"sl")).join("")||'<div class="sl"><p class="mu">Henüz yayında ilan yok.</p></div>';
+ $("#bdt").innerHTML=R.map((_,i)=>`<button class="dt" aria-label="İlan ${i+1}" onclick="bgo(${i})"></button>`).join("");
+ bgo(0);clearInterval(bx);bx=setInterval(()=>{if(!bh)bgo(bi+1)},4000)}
+function bgo(i){const n=$("#bt").children.length;if(!n)return;bi=(i+n)%n;$("#bt").style.transform=`translateX(-${bi*100}%)`;[...$("#bdt").children].forEach((d,j)=>d.classList.toggle("on",j===bi))}
+
+/* ---------- İlanlarım ---------- */
+function ikc(){$("#i_j").innerHTML=subs($("#i_k").value).map(c=>`<option value="${c.categoryId}">${esc(c.categoryName)}</option>`).join("")+'<option value="">Diğer</option>'}
+function ipc(){const d=$("#i_m").value==="Takas";$("#i_p").disabled=d;$("#i_u").disabled=d}
+async function iyay(){
+ const t=val("i_t"),m=$("#i_m").value,k=$("#i_k").value,pv=$("#i_p").value,u=$("#i_u").value,d=val("i_d"),jv=$("#i_j").value;
+ if(!t)return toast("Önce ilan başlığını yaz");
+ const lt=LT[k][m];
+ if(!lt)return toast(K[k]+" kategorisinde "+m.toLocaleLowerCase("tr")+" ilan verilemiyor");
+ if(m!=="Takas"&&pv==="")return toast("Önce bir fiyat gir");
+ const cid=jv?+jv:rootId(k);if(!cid)return toast("Kategori bulunamadı");
+ const sub=catOf(cid);
+ const body={categoryId:cid,listingType:lt,title:t.slice(0,150),about:d||null,
+  price:m==="Takas"?null:+pv,priceUnit:m==="Takas"||!u?null:u,quantity:1,condition:null,
+  swapWanted:m==="Takas"?(d.slice(0,300)||null):null,availableFrom:null,availableTo:null,
+  city:val("i_l").slice(0,50)||null,
+  labor:k==="is"?{skillTitle:(sub&&sub.parentCategoryId?sub.categoryName:t).slice(0,100),headCount:1,experienceYears:null,certifications:null}:null};
+ try{await api("/api/listings",{method:"POST",body});
+  ["i_t","i_p","i_d"].forEach(i=>$("#"+i).value="");toast("İlanın yayınlandı");
+  await Promise.all([loadL(),loadMy()])}catch(e){toast(e.message)}}
+function myl(){$("#my").innerHTML=MY.map(x=>`<div class="c li"><div><span class="tag">${K[x.k]} · ${esc(x.j)} · ${x.m}${x.d?" · Yayında değil":""}</span><h3>${esc(x.t)}</h3><p class="mu">${esc(x.y)}</p>${x.dsc?`<p class="mu">${esc(x.dsc)}</p>`:""}</div><div class="pr"><b>${esc(x.p)}</b><div class="cb"><button class="btn ghost sm" onclick="ilTgl(${x.id})">${x.d?"Yayına al":"Yayından kaldır"}</button><button class="btn ghost sm" onclick="ilSil(${x.id})">Sil</button></div></div></div>`).join("")||'<p class="mu">Henüz ilanın yok. Yukarıdaki formla ilk ilanını oluştur.</p>'}
+async function ilTgl(id){try{const r=await api(`/api/listings/${id}/active`,{method:"PUT"});
+ toast(r.isActive?"İlan yeniden yayında":"İlan yayından kaldırıldı");await Promise.all([loadL(),loadMy()])}catch(e){toast(e.message)}}
+async function ilSil(id){try{await api(`/api/listings/${id}`,{method:"DELETE"});toast("İlan silindi");
+ await Promise.all([loadL(),loadMy()])}catch(e){toast(e.message)}}
+
+/* ---------- Teklif penceresi ---------- */
+function ask(id){cur=L.find(x=>x.id===id);cq=null;$("#mt").textContent=cur.t;$("#mp").value=cur.n??"";$("#mn").value="";$("#md").classList.add("on")}
+function cnt(qid){cq=O.find(o=>o.quote.quoteId===qid);cur=null;$("#mt").textContent="Karşı teklif: "+cq.quote.listingTitle;
+ $("#mp").value=cq.quote.proposedPrice??"";$("#mn").value="";$("#md").classList.add("on")}
+function cl(){$("#md").classList.remove("on")}
+async function snd(){
+ const pv=$("#mp").value,note=val("mn").slice(0,1000),price=pv===""?null:+pv;
+ try{
+  if(cq){
+   await api(`/api/quotes/${cq.quote.quoteId}/counter`,{method:"POST",body:{proposedPrice:price,quantity:cq.quote.quantity,swapOffer:cq.quote.swapOffer,note:note||null}});
+   toast("Karşı teklifin gönderildi")}
+  else{
+   if(price===null&&!note)return toast("Bir bedel ya da not yaz");
+   await api("/api/quotes",{method:"POST",body:{listingId:cur.id,proposedPrice:price,quantity:1,swapOffer:cur.m==="Takas"?(note.slice(0,300)||null):null,startDate:null,endDate:null,note:note||null}});
+   toast("Teklifin gönderildi")}
+  cl();await loadO();go("teklifler")}catch(e){toast(e.message)}}
+
+/* ---------- Teklifler ve sözleşmeler ---------- */
+async function loadO(){O=await api("/api/quotes");ofr()}
+function ocard(o){
+ const qt=o.quote,c=o.contract,buy=!!me&&qt.buyerCompanyId===me.companyId;
+ const s=c?(c.status==="completed"?3:2):(qt.parentQuoteId?1:0);
+ const price=qt.proposedPrice==null?(qt.swapOffer?"Takas teklifi":"Bedel belirtilmedi"):fmtP(qt.proposedPrice,qt.priceUnit);
+ let h="",b="";
+ if(c){
+  if(c.status==="awaiting_signature"){
+   h=c.signedByMe?"İmzaladın. Karşı firmanın imzası bekleniyor.":"Sözleşme hazır, imzan bekleniyor.";
+   if(!c.signedByMe)b=`<button class="btn sm" onclick="cact(${c.contractId},'sign')">Sözleşmeyi imzala</button>`}
+  else if(c.status==="active"){
+   h="Sözleşme iki tarafça imzalandı ve yürürlükte.";
+   b=`<button class="btn sm" onclick="cact(${c.contractId},'complete')">Tamamlandı olarak işaretle</button>`}
+  else if(c.status==="completed"){
+   h="Sözleşme tamamlandı ✓";
+   b=c.reviewedByMe?'<span class="ok">Değerlendirmen kaydedildi</span>'
+    :`<select id="rv${c.contractId}" style="width:auto" aria-label="Puan">${[5,4,3,2,1].map(n=>`<option value="${n}">${n} ★</option>`).join("")}</select><button class="btn sm" onclick="rev(${c.contractId})">Karşı firmayı değerlendir</button>`}
+  else h=c.status==="cancelled"?"Sözleşme iptal edildi.":"Sözleşme ihtilaflı olarak işaretlendi."}
+ else if(qt.status==="pending"){
+  if(qt.createdByMe)h="Teklifin karşı firmaya iletildi, cevap bekleniyor.";
+  else{h="Karşı firmadan teklif geldi.";
+   b=`<button class="btn sm" onclick="qact(${qt.quoteId},'accept')">Kabul et</button><button class="btn ghost sm" onclick="cnt(${qt.quoteId})">Karşı teklif</button><button class="btn ghost sm" onclick="qact(${qt.quoteId},'reject')">Reddet</button>`}}
+ else h={rejected:"Teklif reddedildi.",expired:"Teklifin süresi doldu.",withdrawn:"Teklif geri çekildi.",accepted:"Teklif kabul edildi."}[qt.status]||"";
+ const dead=!c&&qt.status!=="pending";
+ return `<div class="c"><span class="tag">${esc(buy?qt.sellerName:qt.buyerName)} · ${buy?"Alıcı sensin":"Satıcı sensin"}</span><h3>${esc(qt.listingTitle)}</h3><b>${esc(price)}</b>${qt.note?`<p class="mu">“${esc(qt.note)}”</p>`:""}<div class="st">${S.map((n,j)=>`<div class="${!dead&&j<=s?"d":""}">${n}</div>`).join("")}</div><p class="mu">${h}</p>${c?`<details><summary class="mu" style="cursor:pointer">Sözleşme metni · ${esc(c.contractNo)}</summary><p class="mu" style="white-space:pre-wrap">${esc(c.termsText)}</p></details>`:""}${b?`<div class="ob">${b}</div>`:""}</div>`}
+function ofr(){$("#ol").innerHTML=O.filter(o=>o.quote.status!=="countered").map(ocard).join("")||'<p class="mu">Henüz teklifin yok. Pazar sayfasından bir ilana teklif ver.</p>'}
+async function qact(id,a){try{
+ if(a==="accept"){await api(`/api/contracts/accept-quote/${id}`,{method:"POST"});toast("Teklif kabul edildi, sözleşme oluşturuldu")}
+ else{await api(`/api/quotes/${id}/reject`,{method:"POST"});toast("Teklif reddedildi")}
+ await loadO()}catch(e){toast(e.message)}}
+async function cact(id,a){try{
+ if(a==="sign"){const r=await api(`/api/contracts/${id}/sign`,{method:"POST"});toast(r.status==="active"?"İmzalandı, sözleşme yürürlükte":"İmzalandı, karşı firma bekleniyor")}
+ else{await api(`/api/contracts/${id}/complete`,{method:"POST"});toast("Sözleşme tamamlandı")}
+ await loadO()}catch(e){toast(e.message)}}
+async function rev(id){try{await api(`/api/reviews/contract/${id}`,{method:"POST",body:{rating:+$("#rv"+id).value,comment:null}});
+ toast("Değerlendirmen kaydedildi");await loadO()}catch(e){toast(e.message)}}
+
+/* ---------- Forum ---------- */
+async function loadF(){FC=await api("/api/forum/categories");P=await api("/api/forum/topics");
+ $("#fs").innerHTML=FC.map(c=>`<option value="${c.forumCategoryId}">${esc(c.name)}</option>`).join("");fm()}
+function fposts(p){return fo[p.topicId].map(x=>`<p class="mu" style="border-top:1px solid var(--ln);padding-top:8px"><b>${esc(x.author)}:</b> ${esc(x.body)}</p>`).join("")
+ +(p.isClosed?'<p class="mu">Bu konu kapatılmış.</p>':`<div class="row"><input id="rp${p.topicId}" placeholder="Yanıt yaz…" style="flex:1" onkeydown="if(event.key==='Enter')frp(${p.topicId})"><button class="btn sm" onclick="frp(${p.topicId})">Yanıtla</button></div>`)}
+function fm(){const c={};P.forEach(p=>c[p.forumCategoryId]=(c[p.forumCategoryId]||0)+1);
+ const nm=id=>(FC.find(x=>x.forumCategoryId===id)||{}).name||"";
+ $("#fsc").innerHTML=`<button class="chip${fsec?"":" on"}" onclick="fsel(0)">Tümü (${P.length})</button>`+FC.map(x=>`<button class="chip${fsec===x.forumCategoryId?" on":""}" onclick="fsel(${x.forumCategoryId})">${esc(x.name)} (${c[x.forumCategoryId]||0})</button>`).join("");
+ $("#fl").innerHTML=P.filter(p=>!fsec||p.forumCategoryId===fsec).map(p=>`<div class="c fp"><button class="vt${fo[p.topicId]?" on":""}" onclick="ftg(${p.topicId})" aria-label="Yanıtları göster veya gizle">💬<b>${p.replyCount}</b></button><div style="flex:1;min-width:0"><span class="tag">${esc(nm(p.forumCategoryId))} · ${esc(p.author)}</span><h3>${esc(p.title)}</h3><p class="mu">${esc(p.body)}</p>${fo[p.topicId]?fposts(p):""}</div></div>`).join("")||'<p class="mu">Bu sektörde henüz konu yok. İlk konuyu sen aç.</p>'}
+function fsel(x){fsec=x;if(x)$("#fs").value=x;fm()}
+async function ftg(id){try{if(fo[id])delete fo[id];else fo[id]=await api(`/api/forum/topics/${id}/posts`);fm()}catch(e){toast(e.message)}}
+async function frp(id){const b=val("rp"+id);if(!b)return toast("Önce yanıtını yaz");
+ try{await api(`/api/forum/topics/${id}/posts`,{method:"POST",body:{body:b.slice(0,2000)}});
+  fo[id]=await api(`/api/forum/topics/${id}/posts`);P=await api("/api/forum/topics");fm();toast("Yanıtın eklendi")}catch(e){toast(e.message)}}
+async function fp(){const t=val("ft"),b=val("fd");if(!t)return toast("Önce bir konu başlığı yaz");
+ if(!$("#fs").value)return toast("Forum kategorisi bulunamadı");
+ try{await api("/api/forum/topics",{method:"POST",body:{forumCategoryId:+$("#fs").value,title:t.slice(0,200),body:b||t}});
+  $("#ft").value="";$("#fd").value="";if(fsec)fsec=+$("#fs").value;
+  P=await api("/api/forum/topics");fm();toast("Konun yayınlandı")}catch(e){toast(e.message)}}
+
+/* ---------- Başlangıç ---------- */
+$("#fx").innerHTML=F.map((f,i)=>`<div class="c fc" role="button" tabindex="0" onclick="fc(${i})" onkeydown="if(event.key==='Enter')fc(${i})"><div class="ico">${f[0]}</div><h3>${f[1]}</h3><p class="mu">${f[2]}</p><span class="ar">→</span></div>`).join("");
+addEventListener("hashchange",()=>{cv=location.hash.slice(1);route()});
+$$("nav a").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();go(a.dataset.v)}));
+$("#ab").src=$("#lg").src=$(".logo img").src;
+try{const u=localStorage.getItem("kzu");if(u){$("#lu").value=u;$("#lr").checked=true}}catch(e){}
+$("#th").onclick=()=>{gn=!gn;smode()};smode();route();
+tok=tget();if(tok)start();
+</script>
+</body>
+</html>
